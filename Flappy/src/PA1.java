@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -22,6 +23,12 @@ public class PA1 {
 
     long lastFrameTime; // used to calculate delta
     
+
+    float x1=0.0f;
+    float x2=5.0f;
+
+    Random randomGenerator = new Random();
+
     float triangleAngle; // Angle of rotation for the triangles
     float quadAngle; // Angle of rotation for the quads
 
@@ -56,7 +63,7 @@ public class PA1 {
         GL11.glLoadIdentity(); // Reset The Modelview Matrix
 
         GL11.glShadeModel(GL11.GL_SMOOTH); // Enables Smooth Shading
-        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black Background
+        GL11.glClearColor(0.7f,0.9f, 1.0f, 1.0f);
         GL11.glClearDepth(1.0f); // Depth Buffer Setup
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
         GL11.glDepthFunc(GL11.GL_LEQUAL); // The Type Of Depth Test To Do
@@ -69,51 +76,105 @@ public class PA1 {
         quadAngle -= 0.05f * delta; // Decrease The Rotation Variable For The Quads
     }
 
+    private void createPipe(float X,float Y){
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Top)
+        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Top)
+        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Bottom Left Of The Quad (Top)
+        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Bottom Right Of The Quad (Top)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Top Right Of The Quad (Bottom)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Top Left Of The Quad (Bottom)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
+        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Front)
+        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Front)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Front)
+        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Front)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Back)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Back)
+        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Back)
+        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Back)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Left)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Right)
+    }
+
+
+    private void create(float X,float Y){
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Top)
+        GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Top)
+        GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Bottom Left Of The Quad (Top)
+        GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Bottom Right Of The Quad (Top)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Top Right Of The Quad (Bottom)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Top Left Of The Quad (Bottom)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
+        GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Top Right Of The Quad (Front)
+        GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Top Left Of The Quad (Front)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Bottom Left Of The Quad (Front)
+        GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Bottom Right Of The Quad (Front)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Back)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Back)
+        GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Back)
+        GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Back)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Top Right Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Left)
+        GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Bottom Right Of The Quad (Left)
+
+        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Top Left Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Bottom Left Of The Quad (Right)
+        GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Right)
+    }
 
     private void renderGL() {
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
         GL11.glLoadIdentity(); // Reset The View
-        GL11.glTranslatef(0.0f, 0.0f, -7.0f); // Move Right And Into The Screen
+        GL11.glTranslatef(0f, 0.0f, -27.0f); // Move Right And Into The Screen
 
         Camera.apply();
-        GL11.glBegin(GL11.GL_QUADS); // Start Drawing The Cube
-        GL11.glColor3f(0.0f, 1.0f, 0.0f); // Set The Color To Green
-        GL11.glVertex3f(1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Top)
-        GL11.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Top)
-        GL11.glVertex3f(-1.0f, 1.0f, 1.0f); // Bottom Left Of The Quad (Top)
-        GL11.glVertex3f(1.0f, 1.0f, 1.0f); // Bottom Right Of The Quad (Top)
-
-        GL11.glColor3f(1.0f, 0.5f, 0.0f); // Set The Color To Orange
-        GL11.glVertex3f(1.0f, -1.0f, 1.0f); // Top Right Of The Quad (Bottom)
-        GL11.glVertex3f(-1.0f, -1.0f, 1.0f); // Top Left Of The Quad (Bottom)
-        GL11.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
-        GL11.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
-
-        GL11.glColor3f(1.0f, 0.0f, 0.0f); // Set The Color To Red
-        GL11.glVertex3f(1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Front)
-        GL11.glVertex3f(-1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Front)
-        GL11.glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom Left Of The Quad (Front)
-        GL11.glVertex3f(1.0f, -1.0f, 1.0f); // Bottom Right Of The Quad (Front)
-
-        GL11.glColor3f(1.0f, 1.0f, 0.0f); // Set The Color To Yellow
-        GL11.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Back)
-        GL11.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Back)
-        GL11.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Back)
-        GL11.glVertex3f(1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Back)
-
-        GL11.glColor3f(0.0f, 0.0f, 1.0f); // Set The Color To Blue
-        GL11.glVertex3f(-1.0f, 1.0f, 1.0f); // Top Right Of The Quad (Left)
-        GL11.glVertex3f(-1.0f, 1.0f, -1.0f); // Top Left Of The Quad (Left)
-        GL11.glVertex3f(-1.0f, -1.0f, -1.0f); // Bottom Left Of The Quad (Left)
-        GL11.glVertex3f(-1.0f, -1.0f, 1.0f); // Bottom Right Of The Quad (Left)
-
-        GL11.glColor3f(1.0f, 0.0f, 1.0f); // Set The Color To Violet
-        GL11.glVertex3f(1.0f, 1.0f, -1.0f); // Top Right Of The Quad (Right)
-        GL11.glVertex3f(1.0f, 1.0f, 1.0f); // Top Left Of The Quad (Right)
-        GL11.glVertex3f(1.0f, -1.0f, 1.0f); // Bottom Left Of The Quad (Right)
-        GL11.glVertex3f(1.0f, -1.0f, -1.0f); // Bottom Right Of The Quad (Right)
-        GL11.glEnd(); // Done Drawing The Quad
+        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
+        create(-9,0);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
+        createPipe(0,-13);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        createPipe(0,13);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
+        createPipe(9,-13);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        createPipe(9,13);
+        GL11.glEnd();
 
     }
 
