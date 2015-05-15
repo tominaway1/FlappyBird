@@ -23,6 +23,7 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.util.ResourceLoader;
+import org.lwjgl.util.glu.Cylinder;
 
 public class PA1 {
 
@@ -43,10 +44,14 @@ public class PA1 {
     float velocity = 0; 
     static float birdrotation = 0;
     //Texture mapping
-    private Texture texture; 
+    static Texture texture; 
+    static Texture texture2;
+    //Sound effects
     static Audio deadSound; 
     static Audio flapSound; 
     static Audio coinSound; 
+    static Cylinder newPipe = new Cylinder();
+    
 
 
     
@@ -98,6 +103,7 @@ public class PA1 {
         //loading the texture and sound effect
         try{
             texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img3.jpg"));
+            texture2 = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/img5.png"));
             deadSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/dead.wav"));
             flapSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/flap.wav"));
             coinSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/coin.wav"));
@@ -258,6 +264,7 @@ public class PA1 {
 
     private boolean checkCollision(){
         if (y_coord - 1 < -7){
+                deadSound.playAsSoundEffect(1.0f, 1.0f, false);
                 return true;
             } 
         if (x_coord > -12 && x_coord < -7.8){
@@ -324,34 +331,55 @@ public class PA1 {
         create(-10,y_coord);
         GL11.glEnd();
         GL11.glPopMatrix();
+
         // first pipe
-        GL11.glBegin(GL11.GL_QUADS); 
-        createPipe(x_coord,-13+rand1);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS);
-        createPipe(x_coord,13+rand1);
-        GL11.glEnd();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord,-3+rand1,0);
+        GL11.glRotatef(90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord,3+rand1,0);
+        GL11.glRotatef(-90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        
         // second pipe
-        GL11.glBegin(GL11.GL_QUADS); 
-        createPipe(x_coord+10,-13+rand2);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS);
-        createPipe(x_coord+10,13+rand2);
-        GL11.glEnd();
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+10,-3+rand2,0);
+        GL11.glRotatef(90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+10,3+rand2,0);
+        GL11.glRotatef(-90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+
         // third pipe
-        GL11.glBegin(GL11.GL_QUADS); 
-        createPipe(x_coord+20,-13+rand3);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS);
-        createPipe(x_coord+20,13+rand3);
-        GL11.glEnd();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+20,-3+rand3,0);
+        GL11.glRotatef(90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+20,3+rand3,0);
+        GL11.glRotatef(-90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+
         // Fourth pipe
-        GL11.glBegin(GL11.GL_QUADS); 
-        createPipe(x_coord+30,-13+rand4);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS);
-        createPipe(x_coord+30,13+rand4);
-        GL11.glEnd();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+30,-3+rand4,0);
+        GL11.glRotatef(90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x_coord+30,3+rand4,0);
+        GL11.glRotatef(-90, 1, 0, 0);
+        newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+        
         if (x_coord < -20){
             rand1 = rand2;
             rand2 = rand3;
