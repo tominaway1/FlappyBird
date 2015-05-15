@@ -37,9 +37,9 @@ public class PA1 {
 
     Random randomGenerator = new Random();
     float rand1 = 0;
-    float rand2 = (float) randomGenerator.nextInt(16)-8;
-    float rand3 = (float) randomGenerator.nextInt(16)-8;
-    float rand4 = (float) randomGenerator.nextInt(16)-8;
+    float rand2 = (float) randomGenerator.nextInt(10)-5;
+    float rand3 = (float) randomGenerator.nextInt(10)-5;
+    float rand4 = (float) randomGenerator.nextInt(10)-5;
     float velocity = 0; 
     static float birdrotation = 0;
     //Texture mapping
@@ -257,6 +257,10 @@ public class PA1 {
     }
 
     private boolean checkCollision(){
+        System.out.println(y_coord-1);
+        if (y_coord - 1 < -7){
+                return true;
+            } 
         if (x_coord > -12 && x_coord < -7.8){
             if ((y_coord + 1 > 13+rand1-10) || (y_coord - 1 < -13+rand1+10)){
                 deadSound.playAsSoundEffect(1.0f, 1.0f, false);
@@ -266,7 +270,7 @@ public class PA1 {
                 return false;
             }
         }
-        if (x_coord > -22 && x_coord < -17.8){
+        else if (x_coord > -22 && x_coord < -17.8){
             if ((y_coord + 1 > 13+rand2-10) || (y_coord - 1 < -13+rand2+10)){
                 deadSound.playAsSoundEffect(1.0f, 1.0f, false);
                 return true;
@@ -275,6 +279,7 @@ public class PA1 {
                 return false;
             }
         }
+
         return false;
         // return true;
     }
@@ -315,7 +320,8 @@ public class PA1 {
         GL11.glTranslatef(-10,y_coord,0);
         GL11.glRotatef(birdrotation, 0, 0, 1);
         GL11.glTranslatef(10,-y_coord,0);
-        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
+        // make the bird
+        GL11.glBegin(GL11.GL_QUADS);
         create(-10,y_coord);
         GL11.glEnd();
         GL11.glPopMatrix();
@@ -351,7 +357,7 @@ public class PA1 {
             rand1 = rand2;
             rand2 = rand3;
             rand3 = rand4;
-            rand4 = (float)randomGenerator.nextInt(16)-8;
+            rand4 = (float) randomGenerator.nextInt(10)-5;
             x_coord = x_coord+10;
         }
         else{
