@@ -24,10 +24,17 @@ public class PA1 {
     long lastFrameTime; // used to calculate delta
     
 
-    float x1=0.0f;
-    float x2=5.0f;
+    float x_coord = 0f;
+    static float y_coord = 0f;
 
     Random randomGenerator = new Random();
+    float rand1 = 0;
+    float rand2 = (float) randomGenerator.nextInt(16)-8;
+    float rand3 = (float) randomGenerator.nextInt(16)-8;
+    float rand4 = (float) randomGenerator.nextInt(16)-8;
+
+
+    
 
     float triangleAngle; // Angle of rotation for the triangles
     float quadAngle; // Angle of rotation for the quads
@@ -153,29 +160,73 @@ public class PA1 {
         GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Right)
     }
 
-    private void renderGL() {
+    private boolean checkCollision(){
+        
+        return false;
+        // return true;
+    }
 
+    private void reset(){
+        x_coord = -10f;
+        y_coord = 0f;
+        rand1 = 0;
+        rand2 = (float) randomGenerator.nextInt(16)-8;
+        rand3 = (float) randomGenerator.nextInt(16)-8;
+        rand4 = (float) randomGenerator.nextInt(16)-8;
+    }
+    private void renderGL() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
         GL11.glLoadIdentity(); // Reset The View
         GL11.glTranslatef(0f, 0.0f, -27.0f); // Move Right And Into The Screen
 
+        if (checkCollision()){
+            reset();
+        }
         Camera.apply();
         GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
-        create(-9,0);
+        create(-9,y_coord);
         GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
-        createPipe(0,-13);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS);
-        createPipe(0,13);
-        GL11.glEnd();
-        GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
-        createPipe(9,-13);
+        // first pipe
+        GL11.glBegin(GL11.GL_QUADS); 
+        createPipe(x_coord,-13+rand1);
         GL11.glEnd();
         GL11.glBegin(GL11.GL_QUADS);
-        createPipe(9,13);
+        createPipe(x_coord,13+rand1);
         GL11.glEnd();
+        // second pipe
+        GL11.glBegin(GL11.GL_QUADS); 
+        createPipe(x_coord+10,-13+rand2);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        createPipe(x_coord+10,13+rand2);
+        GL11.glEnd();
+        // third pipe
+        GL11.glBegin(GL11.GL_QUADS); 
+        createPipe(x_coord+20,-13+rand3);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        createPipe(x_coord+20,13+rand3);
+        GL11.glEnd();
+        // Fourth pipe
+        GL11.glBegin(GL11.GL_QUADS); 
+        createPipe(x_coord+30,-13+rand4);
+        GL11.glEnd();
+        GL11.glBegin(GL11.GL_QUADS);
+        createPipe(x_coord+30,13+rand4);
+        GL11.glEnd();
+        if (x_coord < -20){
+            reset();
+            rand1 = rand2;
+            rand2 = rand3;
+            rand3 = rand4;
+            rand4 = (float)randomGenerator.nextInt(16)-8;
+            x_coord = x_coord+10;
+        }
+        else{
+            x_coord = x_coord - .05f;
+        }
 
+        y_coord = y_coord - .07f;
     }
 
     /**
@@ -302,6 +353,9 @@ public class PA1 {
 
         public static void acceptInputRotate(float delta) {
             if (Mouse.isInsideWindow() && Mouse.isButtonDown(0)) {
+                
+                y_coord = y_coord + .5f;
+
                 float mouseDX = Mouse.getDX();
                 float mouseDY = -Mouse.getDY();
                 //System.out.println("DX/Y: " + mouseDX + "  " + mouseDY);
