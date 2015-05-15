@@ -161,13 +161,29 @@ public class PA1 {
     }
 
     private boolean checkCollision(){
-        
+        if (x_coord > -12 && x_coord < -7.8){
+            if ((y_coord + 1 > 13+rand1-10) || (y_coord - 1 < -13+rand1+10)){
+
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        if (x_coord > -22 && x_coord < -17.8){
+            if ((y_coord + 1 > 13+rand2-10) || (y_coord - 1 < -13+rand2+10)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         return false;
         // return true;
     }
 
     private void reset(){
-        x_coord = -10f;
+        x_coord = 0f;
         y_coord = 0f;
         rand1 = 0;
         rand2 = (float) randomGenerator.nextInt(16)-8;
@@ -180,11 +196,12 @@ public class PA1 {
         GL11.glTranslatef(0f, 0.0f, -27.0f); // Move Right And Into The Screen
 
         if (checkCollision()){
+            System.out.println("reset");
             reset();
         }
         Camera.apply();
         GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
-        create(-9,y_coord);
+        create(-10,y_coord);
         GL11.glEnd();
         // first pipe
         GL11.glBegin(GL11.GL_QUADS); 
@@ -215,7 +232,6 @@ public class PA1 {
         createPipe(x_coord+30,13+rand4);
         GL11.glEnd();
         if (x_coord < -20){
-            reset();
             rand1 = rand2;
             rand2 = rand3;
             rand3 = rand4;
