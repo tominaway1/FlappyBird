@@ -18,6 +18,10 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.lwjgl.openal.AL;
+import org.newdawn.slick.openal.Audio;
+import org.newdawn.slick.openal.AudioLoader;
+import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.util.ResourceLoader;
 
 public class PA1 {
@@ -40,6 +44,9 @@ public class PA1 {
     static float birdrotation = 0;
     //Texture mapping
     private Texture texture; 
+    static Audio deadSound; 
+    static Audio flapSound; 
+    static Audio coinSound; 
 
 
     
@@ -88,9 +95,12 @@ public class PA1 {
         // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        //loading the texture
+        //loading the texture and sound effect
         try{
             texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img3.jpg"));
+            deadSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/dead.wav"));
+            flapSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/flap.wav"));
+            coinSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/coin.wav"));
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -100,6 +110,9 @@ public class PA1 {
     private void updateLogic(int delta) {
         triangleAngle += 0.1f * delta; // Increase The Rotation Variable For The Triangles
         quadAngle -= 0.05f * delta; // Decrease The Rotation Variable For The Quads
+        // polling is required to allow streaming to get a chance to
+        // queue buffers.
+        SoundStore.get().poll(0);
     }
 
     private void createPipe(float X,float Y){
@@ -249,7 +262,7 @@ public class PA1 {
             } 
         if (x_coord > -12 && x_coord < -7.8){
             if ((y_coord + 1 > 13+rand1-10) || (y_coord - 1 < -13+rand1+10)){
-
+                deadSound.playAsSoundEffect(1.0f, 1.0f, false);
                 return true;
             }
             else{
@@ -258,6 +271,7 @@ public class PA1 {
         }
         else if (x_coord > -22 && x_coord < -17.8){
             if ((y_coord + 1 > 13+rand2-10) || (y_coord - 1 < -13+rand2+10)){
+                deadSound.playAsSoundEffect(1.0f, 1.0f, false);
                 return true;
             }
             else{
@@ -446,6 +460,7 @@ public class PA1 {
      */
     private void cleanup() {
         Display.destroy();
+        AL.destroy();
     }
     
     public static void main(String[] args) {
@@ -492,6 +507,7 @@ public class PA1 {
                 
                 y_coord = y_coord + .5f;
                 birdrotation += 50;
+                flapSound.playAsSoundEffect(1.0f, 1.0f, false);
 
                 // float mouseDX = Mouse.getDX();
                 // float mouseDY = -Mouse.getDY();
