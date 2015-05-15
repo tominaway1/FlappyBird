@@ -15,6 +15,10 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class PA1 {
 
@@ -34,6 +38,8 @@ public class PA1 {
     float rand4 = (float) randomGenerator.nextInt(16)-8;
     float velocity = 0; 
     static float birdrotation = 0;
+    //Texture mapping
+    private Texture texture; 
 
 
     
@@ -77,6 +83,17 @@ public class PA1 {
         GL11.glEnable(GL11.GL_DEPTH_TEST); // Enables Depth Testing
         GL11.glDepthFunc(GL11.GL_LEQUAL); // The Type Of Depth Test To Do
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST); // Really Nice Perspective Calculations
+        //enable the textures and blending
+        // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        //loading the texture
+        try{
+            texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img3.jpg"));
+        } catch(IOException e){
+            e.printStackTrace();
+        }
         Camera.create();        
     }
     
@@ -165,41 +182,65 @@ public class PA1 {
 
     private void createFloor(float X,float Y){
         
-        GL11.glColor3f(0.55f, 0.47f, 0.14f); // Set The Color To Bronze
-        GL11.glVertex3f(X+50.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Top)
+        //GL11.glColor3f(0.55f, 0.47f, 0.14f); // Set The Color To Bronze
+        GL11.glTexCoord3f(1f,1f,0f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Top)
+        GL11.glTexCoord3f(0f,1f,0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Top)
+        GL11.glTexCoord3f(0f,1f,1f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 40.0f); // Bottom Left Of The Quad (Top)
-        GL11.glVertex3f(X+50.0f, Y+1.0f, 40.0f); // Bottom Right Of The Quad (Top)
+        GL11.glTexCoord3f(1f,1f,1f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Bottom Right Of The Quad (Top)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+50.0f, Y-1.0f, 40.0f); // Top Right Of The Quad (Bottom)
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Top Right Of The Quad (Bottom)
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 40.0f); // Top Left Of The Quad (Bottom)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Bottom)
-        GL11.glVertex3f(X+50.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Bottom)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Bottom)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+50.0f, Y+1.0f, 40.0f); // Top Right Of The Quad (Front)
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Top Right Of The Quad (Front)
+        GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Front)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Front)
-        GL11.glVertex3f(X+50.0f, Y-1.0f, 40.0f); // Bottom Right Of The Quad (Front)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Bottom Right Of The Quad (Front)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+50.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Back)
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Back)
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Back)
+        GL11.glTexCoord3f(0.0f, 1.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Back)
-        GL11.glVertex3f(X+50.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Back)
+        GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Back)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 40.0f); // Top Right Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 1.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 40.0f); // Bottom Right Of The Quad (Left)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+50.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Right)
-        GL11.glVertex3f(X+50.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Right)
-        GL11.glVertex3f(X+50.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Right)
-        GL11.glVertex3f(X+50.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Right)
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
+        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
+        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Right)
     }
 
     private boolean checkCollision(){
@@ -243,10 +284,18 @@ public class PA1 {
             reset();
         }
         Camera.apply();
-        //create the floor
+        //create the floor and bind the texture
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        
+        Color.white.bind();
+        texture.bind();
+        // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
         GL11.glBegin(GL11.GL_QUADS);
-        createFloor(-15,-8);
+        createFloor(-40,-8);
         GL11.glEnd();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+       
 
         GL11.glPushMatrix();
         GL11.glTranslatef(-10,y_coord,0);
