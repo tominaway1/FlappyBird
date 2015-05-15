@@ -1,3 +1,9 @@
+package finalproject;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+
 import java.nio.ByteBuffer;
 import java.io.File;
 import java.io.IOException;
@@ -25,10 +31,16 @@ import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.util.ResourceLoader;
 import org.lwjgl.util.glu.Cylinder;
 
+import shaders.*;
+
+
 public class PA1 {
 
     String windowTitle = "3D Shapes";
     public boolean closeRequested = false;
+
+
+    ShaderProgram shader;
 
     long lastFrameTime; // used to calculate delta
     
@@ -66,6 +78,7 @@ public class PA1 {
         createWindow();
         getDelta(); // Initialise delta timer
         initGL();
+        initShaders();
         
         while (!closeRequested) {
             pollInput();
@@ -121,6 +134,59 @@ public class PA1 {
         // polling is required to allow streaming to get a chance to
         // queue buffers.
         SoundStore.get().poll(0);
+    }
+
+        // Taken from http://stackoverflow.com/questions/16027229/reading-from-a-text-file-and-storing-in-a-string
+    private String read_file(String fileName) throws IOException{
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        try {
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append("\n");
+                line = br.readLine();
+            }
+            return sb.toString();
+        } finally {
+            br.close();
+        }
+    }
+
+    private void initShaders() {
+        String vertex_shader="";
+        String fragment_shader="";
+
+        // Read in vertex and fragment shader files 
+        try{
+            vertex_shader = read_file("src/shaders/shader.vs");
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        try{
+            fragment_shader = read_file("src/shaders/shader_blinn_phong.fs");
+        }
+        catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        
+
+        // System.out.println(vertex_shader);
+        // System.out.println(fragment_shader);
+
+        // Create shader program
+        try {
+            shader = new ShaderProgram(vertex_shader, fragment_shader);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     private void createPipe(float X,float Y){
@@ -304,6 +370,13 @@ public class PA1 {
         rand4 = (float) randomGenerator.nextInt(8)-1;
     }
     private void renderGL() {
+        // start to use shaders
+        shader.begin();
+        float dir = (float)(1./Math.sqrt(3));
+        shader.setUniform3f("lightDir", dir, dir, dir);
+        shader.setUniform3f("ambCol", 1, 0, 0);
+        shader.setUniform3f("specCol", 1, 1, 1);
+
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
         GL11.glLoadIdentity(); // Reset The View
         GL11.glTranslatef(0f, 0.0f, -27.0f); // Move Right And Into The Screen
@@ -418,6 +491,7 @@ public class PA1 {
         } else if(birdrotation > 50){
             birdrotation = 50;
         }
+        shader.end();
        
     }
 
