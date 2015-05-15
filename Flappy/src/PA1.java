@@ -35,6 +35,7 @@ public class PA1 {
     float x_coord = 0f;
     static float y_coord = 0f;
 
+    // random num generator
     Random randomGenerator = new Random();
     float rand1 = 0;
     float rand2 = (float) randomGenerator.nextInt(8)-1;
@@ -42,14 +43,15 @@ public class PA1 {
     float rand4 = (float) randomGenerator.nextInt(8)-1;
     float velocity = 0; 
     static float birdrotation = 0;
+
     //Texture mapping
     private Texture texture; 
     static Audio deadSound; 
     static Audio flapSound; 
     static Audio coinSound; 
 
-
-    
+    boolean passedOne = false;
+    boolean passedTwo = false;
 
     float triangleAngle; // Angle of rotation for the triangles
     float quadAngle; // Angle of rotation for the quads
@@ -284,6 +286,8 @@ public class PA1 {
     }
 
     private void reset(){
+        passedOne = false;
+        passedTwo = false;
         x_coord = 0f;
         y_coord = 0f;
         birdrotation = 0;
@@ -324,6 +328,17 @@ public class PA1 {
         create(-10,y_coord);
         GL11.glEnd();
         GL11.glPopMatrix();
+        
+        // check if passed pipe
+        if (x_coord <= -10 && !passedOne){
+            coinSound.playAsSoundEffect(1.0f, 1.0f, false);
+            passedOne = true;
+        }
+        if (x_coord + 10 <= -10 && !passedTwo){
+            coinSound.playAsSoundEffect(1.0f, 1.0f, false);
+            passedOne = true;
+        }
+
         // first pipe
         GL11.glBegin(GL11.GL_QUADS); 
         createPipe(x_coord,-13+rand1);
@@ -358,6 +373,8 @@ public class PA1 {
             rand3 = rand4;
             rand4 = (float) randomGenerator.nextInt(8)-1;
             x_coord = x_coord+10;
+            // passedOne = false;
+            passedTwo = false;
         }
         else{
             x_coord = x_coord - .05f;
