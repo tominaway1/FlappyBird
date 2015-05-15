@@ -32,6 +32,8 @@ public class PA1 {
     float rand2 = (float) randomGenerator.nextInt(16)-8;
     float rand3 = (float) randomGenerator.nextInt(16)-8;
     float rand4 = (float) randomGenerator.nextInt(16)-8;
+    float velocity = 0; 
+    static float birdrotation = 0;
 
 
     
@@ -123,6 +125,7 @@ public class PA1 {
 
 
     private void create(float X,float Y){
+        
         GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Top)
         GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Top)
@@ -185,6 +188,7 @@ public class PA1 {
     private void reset(){
         x_coord = 0f;
         y_coord = 0f;
+        birdrotation = 0;
         rand1 = 0;
         rand2 = (float) randomGenerator.nextInt(16)-8;
         rand3 = (float) randomGenerator.nextInt(16)-8;
@@ -200,9 +204,14 @@ public class PA1 {
             reset();
         }
         Camera.apply();
+        GL11.glPushMatrix();
+        GL11.glTranslatef(-10,y_coord,0);
+        GL11.glRotatef(birdrotation, 0, 0, 1);
+        GL11.glTranslatef(10,-y_coord,0);
         GL11.glBegin(GL11.GL_QUADS); // Start drawing The Cube
         create(-10,y_coord);
         GL11.glEnd();
+        GL11.glPopMatrix();
         // first pipe
         GL11.glBegin(GL11.GL_QUADS); 
         createPipe(x_coord,-13+rand1);
@@ -243,6 +252,19 @@ public class PA1 {
         }
 
         y_coord = y_coord - .07f;
+
+        //rotates the bird when the mouse isn't being clicked
+        birdrotation -= 2;
+        if(birdrotation <= -60 ){
+            birdrotation = -60;
+        } else if(birdrotation > 50){
+            birdrotation = 50;
+        }
+       
+    }
+
+    public boolean isFalling() {
+        return velocity > 110;
     }
 
     /**
@@ -371,6 +393,7 @@ public class PA1 {
             if (Mouse.isInsideWindow() && Mouse.isButtonDown(0)) {
                 
                 y_coord = y_coord + .5f;
+                birdrotation += 50;
 
                 float mouseDX = Mouse.getDX();
                 float mouseDY = -Mouse.getDY();
