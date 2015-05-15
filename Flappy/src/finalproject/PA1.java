@@ -117,7 +117,7 @@ public class PA1 {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         //loading the texture and sound effect
         try{
-            texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img3.jpg"));
+            texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img4.jpg"));
             texture2 = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/img5.png"));
             deadSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/dead.wav"));
             flapSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/flap.wav"));
@@ -422,7 +422,13 @@ public class PA1 {
 
 
         // first pipe
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        newPipe.setTextureFlag(true);
+        Color.white.bind();
+        texture2.bind();
+      
         GL11.glPushMatrix();
+       
         GL11.glTranslatef(x_coord,-3+rand1,0);
         GL11.glRotatef(90, 1, 0, 0);
         newPipe.draw(1,1,10,16,16);
@@ -431,9 +437,11 @@ public class PA1 {
         GL11.glTranslatef(x_coord,3+rand1,0);
         GL11.glRotatef(-90, 1, 0, 0);
         newPipe.draw(1,1,10,16,16);
+        GL11.glPopMatrix();
+
         
         // second pipe
-        GL11.glPopMatrix();
+        
         GL11.glPushMatrix();
         GL11.glTranslatef(x_coord+10,-3+rand2,0);
         GL11.glRotatef(90, 1, 0, 0);
@@ -468,6 +476,7 @@ public class PA1 {
         GL11.glRotatef(-90, 1, 0, 0);
         newPipe.draw(1,1,10,16,16);
         GL11.glPopMatrix();
+
         
         if (x_coord < -20){
             rand1 = rand2;
