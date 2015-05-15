@@ -33,9 +33,9 @@ public class PA1 {
 
     Random randomGenerator = new Random();
     float rand1 = 0;
-    float rand2 = (float) randomGenerator.nextInt(10)-5;
-    float rand3 = (float) randomGenerator.nextInt(10)-5;
-    float rand4 = (float) randomGenerator.nextInt(10)-5;
+    float rand2 = (float) randomGenerator.nextInt(8)-1;
+    float rand3 = (float) randomGenerator.nextInt(8)-1;
+    float rand4 = (float) randomGenerator.nextInt(8)-1;
     float velocity = 0; 
     static float birdrotation = 0;
     //Texture mapping
@@ -244,7 +244,6 @@ public class PA1 {
     }
 
     private boolean checkCollision(){
-        System.out.println(y_coord-1);
         if (y_coord - 1 < -7){
                 return true;
             } 
@@ -275,9 +274,9 @@ public class PA1 {
         y_coord = 0f;
         birdrotation = 0;
         rand1 = 0;
-        rand2 = (float) randomGenerator.nextInt(16)-8;
-        rand3 = (float) randomGenerator.nextInt(16)-8;
-        rand4 = (float) randomGenerator.nextInt(16)-8;
+        rand2 = (float) randomGenerator.nextInt(8)-1;
+        rand3 = (float) randomGenerator.nextInt(8)-1;
+        rand4 = (float) randomGenerator.nextInt(8)-1;
     }
     private void renderGL() {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
@@ -343,7 +342,7 @@ public class PA1 {
             rand1 = rand2;
             rand2 = rand3;
             rand3 = rand4;
-            rand4 = (float) randomGenerator.nextInt(10)-5;
+            rand4 = (float) randomGenerator.nextInt(8)-1;
             x_coord = x_coord+10;
         }
         else{
@@ -494,60 +493,69 @@ public class PA1 {
                 y_coord = y_coord + .5f;
                 birdrotation += 50;
 
-                float mouseDX = Mouse.getDX();
-                float mouseDY = -Mouse.getDY();
-                //System.out.println("DX/Y: " + mouseDX + "  " + mouseDY);
-                rotation.y += mouseDX * mouseSensitivity * delta;
-                rotation.x += mouseDY * mouseSensitivity * delta;
-                rotation.x = Math.max(-maxLook, Math.min(maxLook, rotation.x));
+                // float mouseDX = Mouse.getDX();
+                // float mouseDY = -Mouse.getDY();
+                // //System.out.println("DX/Y: " + mouseDX + "  " + mouseDY);
+                // rotation.y += mouseDX * mouseSensitivity * delta;
+                // rotation.x += mouseDY * mouseSensitivity * delta;
+                // rotation.x = Math.max(-maxLook, Math.min(maxLook, rotation.x));
             }
         }
 
         public static void acceptInputMove(float delta) {
-            boolean keyUp = Keyboard.isKeyDown(Keyboard.KEY_W);
-            boolean keyDown = Keyboard.isKeyDown(Keyboard.KEY_S);
-            boolean keyRight = Keyboard.isKeyDown(Keyboard.KEY_D);
-            boolean keyLeft = Keyboard.isKeyDown(Keyboard.KEY_A);
-            boolean keyFast = Keyboard.isKeyDown(Keyboard.KEY_Q);
-            boolean keySlow = Keyboard.isKeyDown(Keyboard.KEY_E);
-            boolean keyFlyUp = Keyboard.isKeyDown(Keyboard.KEY_SPACE);
-            boolean keyFlyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+            // boolean keyUp = Keyboard.isKeyDown(Keyboard.KEY_W);
+            // boolean keyDown = Keyboard.isKeyDown(Keyboard.KEY_S);
+            boolean keyRight = Keyboard.isKeyDown(Keyboard.KEY_RIGHT);
+            boolean keyLeft = Keyboard.isKeyDown(Keyboard.KEY_LEFT);
+            // boolean keyFast = Keyboard.isKeyDown(Keyboard.KEY_Q);
+            // boolean keySlow = Keyboard.isKeyDown(Keyboard.KEY_E);
+            // boolean keyFlyUp = Keyboard.isKeyDown(Keyboard.KEY_SPACE);
+            // boolean keyFlyDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
 
             float speed;
 
-            if (keyFast) {
-                speed = moveSpeed * 5;
-            } else if (keySlow) {
-                speed = moveSpeed / 2;
-            } else {
-                speed = moveSpeed;
-            }
+            // if (keyFast) {
+            //     speed = moveSpeed * 5;
+            // } else if (keySlow) {
+            //     speed = moveSpeed / 2;
+            // } else {
+            //     speed = moveSpeed;
+            // }
 
-            speed *= delta;
+            // speed *= delta;
 
-            if (keyFlyUp) {
-                pos.y += speed;
-            }
-            if (keyFlyDown) {
-                pos.y -= speed;
-            }
+            // if (keyFlyUp) {
+            //     pos.y += speed;
+            // }
+            // if (keyFlyDown) {
+            //     pos.y -= speed;
+            // }
 
-            if (keyDown) {
-                pos.x -= Math.sin(Math.toRadians(rotation.y)) * speed;
-                pos.z += Math.cos(Math.toRadians(rotation.y)) * speed;
-            }
-            if (keyUp) {
-                pos.x += Math.sin(Math.toRadians(rotation.y)) * speed;
-                pos.z -= Math.cos(Math.toRadians(rotation.y)) * speed;
-            }
+            // if (keyDown) {
+            //     pos.x -= Math.sin(Math.toRadians(rotation.y)) * speed;
+            //     pos.z += Math.cos(Math.toRadians(rotation.y)) * speed;
+            // }
+            // if (keyUp) {
+            //     pos.x += Math.sin(Math.toRadians(rotation.y)) * speed;
+            //     pos.z -= Math.cos(Math.toRadians(rotation.y)) * speed;
+            // }
+            // if (keyLeft) {
+            //     pos.x += Math.sin(Math.toRadians(rotation.y - 90)) * speed;
+            //     pos.z -= Math.cos(Math.toRadians(rotation.y - 90)) * speed;
+            // }
+            // if (keyRight) {
+            //     pos.x += Math.sin(Math.toRadians(rotation.y + 90)) * speed;
+            //     pos.z -= Math.cos(Math.toRadians(rotation.y + 90)) * speed;
+            // }
             if (keyLeft) {
-                pos.x += Math.sin(Math.toRadians(rotation.y - 90)) * speed;
-                pos.z -= Math.cos(Math.toRadians(rotation.y - 90)) * speed;
-            }
+               rotation.y += -0.5;
+               // rotation.x += 0.5;
+               }
             if (keyRight) {
-                pos.x += Math.sin(Math.toRadians(rotation.y + 90)) * speed;
-                pos.z -= Math.cos(Math.toRadians(rotation.y + 90)) * speed;
+                rotation.y += 0.5;
+                // rotation.x += -0.5;
             }
+
         }
 
         public static void setSpeed(float speed) {
