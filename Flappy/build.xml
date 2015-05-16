@@ -61,7 +61,7 @@
     </target>
 
     <target name="run_win" if="isWindows">
-        <java classname="PA1" fork="true">
+        <java classname="finalproject.flappy" fork="true">
             <sysproperty key="java.library.path" path="lwjgl-2.9.3/native/windows" />
             <classpath>
                 <path refid="class.path"/>
@@ -71,7 +71,7 @@
     </target>
 
     <target name="run_unix" if="isUnix">
-        <java classname="PA1" fork="true">
+        <java classname="finalproject.flappy" fork="true">
             <sysproperty key="java.library.path" path="lwjgl-2.9.3/native/linux" />
             <classpath>
                 <path refid="class.path"/>
@@ -81,7 +81,7 @@
     </target>
 
     <target name="run_mac" if="isMac">
-        <java classname="PA1" fork="true">
+        <java classname="finalproject.flappy" fork="true">
             <sysproperty key="java.library.path" path="lwjgl-2.9.3/native/macosx" />
             <classpath>
                 <path refid="class.path"/>

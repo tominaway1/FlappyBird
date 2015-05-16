@@ -34,7 +34,7 @@ import org.lwjgl.util.glu.Cylinder;
 import shaders.*;
 
 
-public class PA1 {
+public class flappy {
 
     String windowTitle = "3D Shapes";
     public boolean closeRequested = false;
@@ -371,11 +371,11 @@ public class PA1 {
     }
     private void renderGL() {
         // start to use shaders
-        shader.begin();
-        float dir = (float)(1./Math.sqrt(3));
-        shader.setUniform3f("lightDir", dir, dir, dir);
-        shader.setUniform3f("ambCol", 1, 0, 0);
-        shader.setUniform3f("specCol", 1, 1, 1);
+        // shader.begin();
+        // float dir = (float)(1./Math.sqrt(3));
+        // shader.setUniform3f("lightDir", dir, dir, dir);
+        // shader.setUniform3f("ambCol", 1, 0, 0);
+        // shader.setUniform3f("specCol", 1, 1, 1);
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT); // Clear The Screen And The Depth Buffer
         GL11.glLoadIdentity(); // Reset The View
@@ -500,7 +500,7 @@ public class PA1 {
         } else if(birdrotation > 50){
             birdrotation = 50;
         }
-        shader.end();
+        // shader.end();
        
     }
 
@@ -593,7 +593,7 @@ public class PA1 {
     }
     
     public static void main(String[] args) {
-        new PA1().run();
+        new flappy().run();
     }
     
     public static class Camera {
