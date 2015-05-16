@@ -371,9 +371,9 @@ public class flappy {
     }
     private void renderGL() {
         // start to use shaders
-        // shader.begin();
-        // float dir = (float)(1./Math.sqrt(3));
-        // shader.setUniform3f("lightDir", dir, dir, dir);
+        shader.begin();
+        float dir = (float)(1./Math.sqrt(3));
+        shader.setUniform3f("lightDir", dir, dir, dir);
         // shader.setUniform3f("ambCol", 1, 0, 0);
         // shader.setUniform3f("specCol", 1, 1, 1);
 
@@ -393,12 +393,11 @@ public class flappy {
         texture.bind();
         // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+        shader.end();
         GL11.glBegin(GL11.GL_QUADS);
         createFloor(-40,-8);
         GL11.glEnd();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-       
-
         GL11.glPushMatrix();
         GL11.glTranslatef(-10,y_coord,0);
         GL11.glRotatef(birdrotation, 0, 0, 1);
@@ -441,7 +440,6 @@ public class flappy {
 
         
         // second pipe
-        
         GL11.glPushMatrix();
         GL11.glTranslatef(x_coord+10,-3+rand2,0);
         GL11.glRotatef(90, 1, 0, 0);
@@ -500,7 +498,7 @@ public class flappy {
         } else if(birdrotation > 50){
             birdrotation = 50;
         }
-        // shader.end();
+        
        
     }
 
