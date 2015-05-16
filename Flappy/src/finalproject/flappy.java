@@ -1,5 +1,6 @@
 package finalproject;
 
+// import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.util.Random;
+// import java.awt.Font;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -21,30 +23,32 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.openal.AL;
+import org.lwjgl.util.glu.Cylinder;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
-import org.lwjgl.openal.AL;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.openal.SoundStore;
 import org.newdawn.slick.util.ResourceLoader;
-import org.lwjgl.util.glu.Cylinder;
+// import org.newdawn.slick.UnicodeFont;
 
 import shaders.*;
 
 
 public class flappy {
 
-    String windowTitle = "3D Shapes";
+    String windowTitle = "Flappy Bird";
     public boolean closeRequested = false;
-
-
-    ShaderProgram shader;
-
     long lastFrameTime; // used to calculate delta
     
+    // initiate shader
+    ShaderProgram shader;
 
+    
+    // initialize coordinates
     float x_coord = 0f;
     static float y_coord = 0f;
 
@@ -54,31 +58,40 @@ public class flappy {
     float rand2 = (float) randomGenerator.nextInt(8)-1;
     float rand3 = (float) randomGenerator.nextInt(8)-1;
     float rand4 = (float) randomGenerator.nextInt(8)-1;
+    
+    // initialize bird attributes
     float velocity = 0; 
     static float birdrotation = 0;
 
     //Texture mapping
     static Texture texture; 
     static Texture texture2;
+
     //Sound effects
     static Audio deadSound; 
     static Audio flapSound; 
     static Audio coinSound; 
     static Cylinder newPipe = new Cylinder();
     
+    // font effects
+    // private UnicodeFont font;
+    // private boolean antiAlias = false;
 
+    // initialize booleans
     boolean passedOne = false;
     boolean passedTwo = false;
+    static boolean begin = false;
 
     float triangleAngle; // Angle of rotation for the triangles
     float quadAngle; // Angle of rotation for the quads
 
     public void run() {
-
         createWindow();
         getDelta(); // Initialise delta timer
+        // init();
         initGL();
         initShaders();
+
         
         while (!closeRequested) {
             pollInput();
@@ -91,6 +104,13 @@ public class flappy {
         cleanup();
     }
     
+
+    // public void init() {
+    //     Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+    //     font = new UnicodeFont(awtFont);
+
+    // }
+
     private void initGL() {
 
         /* OpenGL */
@@ -175,11 +195,6 @@ public class flappy {
             System.exit(1);
         }
 
-        
-
-        // System.out.println(vertex_shader);
-        // System.out.println(fragment_shader);
-
         // Create shader program
         try {
             shader = new ShaderProgram(vertex_shader, fragment_shader);
@@ -189,43 +204,43 @@ public class flappy {
         }
     }
 
-    private void createPipe(float X,float Y){
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Top)
-        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Top)
-        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Bottom Left Of The Quad (Top)
-        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Bottom Right Of The Quad (Top)
+    // private void createPipe(float X,float Y){
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Top)
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Top)
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Bottom Left Of The Quad (Top)
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Bottom Right Of The Quad (Top)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Top Right Of The Quad (Bottom)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Top Left Of The Quad (Bottom)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
-        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Top Right Of The Quad (Bottom)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Top Left Of The Quad (Bottom)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Front)
-        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Front)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Front)
-        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Front)
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Front)
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Front)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Front)
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Front)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Back)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Back)
-        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Back)
-        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Back)
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Back)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Back)
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Back)
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Back)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Left)
-        GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Left)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Left)
-        GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Left)
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, 1.0f); // Top Right Of The Quad (Left)
+    //     GL11.glVertex3f(X-1.0f, Y+10.0f, -1.0f); // Top Left Of The Quad (Left)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, -1.0f); // Bottom Left Of The Quad (Left)
+    //     GL11.glVertex3f(X-1.0f, Y-10.0f, 1.0f); // Bottom Right Of The Quad (Left)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
-        GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Right)
-        GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Right)
-        GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Right)
-        GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Right)
-    }
+    //     GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, -1.0f); // Top Right Of The Quad (Right)
+    //     GL11.glVertex3f(X+1.0f, Y+10.0f, 1.0f); // Top Left Of The Quad (Right)
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, 1.0f); // Bottom Left Of The Quad (Right)
+    //     GL11.glVertex3f(X+1.0f, Y-10.0f, -1.0f); // Bottom Right Of The Quad (Right)
+    // }
 
 
     private void create(float X,float Y){
@@ -361,6 +376,7 @@ public class flappy {
     private void reset(){
         passedOne = false;
         passedTwo = false;
+        begin = false;
         x_coord = 0f;
         y_coord = 0f;
         birdrotation = 0;
@@ -402,12 +418,12 @@ public class flappy {
         GL11.glTranslatef(-10,y_coord,0);
         GL11.glRotatef(birdrotation, 0, 0, 1);
         GL11.glTranslatef(10,-y_coord,0);
+
         // make the bird
         GL11.glBegin(GL11.GL_QUADS);
         create(-10,y_coord);
         GL11.glEnd();
         GL11.glPopMatrix();
-
         
         // check if passed pipe
         if (x_coord <= -10 && !passedOne){
@@ -419,15 +435,13 @@ public class flappy {
             passedOne = true;
         }
 
-
         // first pipe
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         newPipe.setTextureFlag(true);
         Color.white.bind();
         texture2.bind();
-      
+
         GL11.glPushMatrix();
-       
         GL11.glTranslatef(x_coord,-3+rand1,0);
         GL11.glRotatef(90, 1, 0, 0);
         newPipe.draw(1,1,10,16,16);
@@ -475,31 +489,41 @@ public class flappy {
         newPipe.draw(1,1,10,16,16);
         GL11.glPopMatrix();
 
-        
-        if (x_coord < -20){
-            rand1 = rand2;
-            rand2 = rand3;
-            rand3 = rand4;
-            rand4 = (float) randomGenerator.nextInt(8)-1;
-            x_coord = x_coord+10;
-            // passedOne = false;
-            passedTwo = false;
-        }
-        else{
-            x_coord = x_coord - .05f;
-        }
+        if (begin){
+            if (x_coord < -20){
+                rand1 = rand2;
+                rand2 = rand3;
+                rand3 = rand4;
+                rand4 = (float) randomGenerator.nextInt(8)-1;
+                x_coord = x_coord+10;
+                // passedOne = false;
+                passedTwo = false;
+            }
+            else{
+                x_coord = x_coord - .05f;
+            }
 
-        y_coord = y_coord - .07f;
+            y_coord = y_coord - .07f;
 
-        //rotates the bird when the mouse isn't being clicked
-        birdrotation -= 2;
-        if(birdrotation <= -60 ){
-            birdrotation = -60;
-        } else if(birdrotation > 50){
-            birdrotation = 50;
+
+            //rotates the bird when the mouse isn't being clicked
+            birdrotation -= 2;
+            if(birdrotation <= -60 ){
+                birdrotation = -60;
+            } else if(birdrotation > 50){
+                birdrotation = 50;
+            }
         }
+        // else{
+        //     Color.white.bind();
+        //     font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.black);
         
-       
+        // }
+    //     GL11.glEnable(GL11.GL_BLEND);
+    // GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    //     Color.white.bind();
+    //     font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.black);
+    //     GL11.glDisable(GL11.GL_BLEND);
     }
 
     public boolean isFalling() {
@@ -555,7 +579,7 @@ public class flappy {
             ImageIO.write(image, format, file);
         } catch (IOException e) { e.printStackTrace(); }
     }
-    
+
     /** 
      * Calculate how many milliseconds have passed 
      * since last frame.
@@ -631,7 +655,7 @@ public class flappy {
 
         public static void acceptInputRotate(float delta) {
             if (Mouse.isInsideWindow() && Mouse.isButtonDown(0)) {
-                
+                begin = true;
                 y_coord = y_coord + .5f;
                 birdrotation += 50;
                 flapSound.playAsSoundEffect(1.0f, 1.0f, false);
