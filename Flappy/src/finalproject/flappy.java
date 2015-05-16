@@ -66,6 +66,7 @@ public class flappy {
     //Texture mapping
     static Texture texture; 
     static Texture texture2;
+    static Texture texture3;
 
     //Sound effects
     static Audio deadSound; 
@@ -137,8 +138,9 @@ public class flappy {
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         //loading the texture and sound effect
         try{
-            texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img4.jpg"));
+            texture = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img3.jpg"));
             texture2 = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/img5.png"));
+            texture3 = TextureLoader.getTexture("JPG", ResourceLoader.getResourceAsStream("res/img4.jpg"));
             deadSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/dead.wav"));
             flapSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/flap.wav"));
             coinSound = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream("res/coin.wav"));
@@ -245,40 +247,64 @@ public class flappy {
 
     private void create(float X,float Y){
         
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1f,1f,0f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Top)
+        GL11.glTexCoord3f(0f,1f,0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Top)
+        GL11.glTexCoord3f(0f,1f,1f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Bottom Left Of The Quad (Top)
+        GL11.glTexCoord3f(1f,1f,1f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Bottom Right Of The Quad (Top)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Top Right Of The Quad (Bottom)
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Top Left Of The Quad (Bottom)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Bottom)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Bottom)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Top Right Of The Quad (Front)
+        GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Top Left Of The Quad (Front)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Bottom Left Of The Quad (Front)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Bottom Right Of The Quad (Front)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Back)
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Back)
+        GL11.glTexCoord3f(0.0f, 1.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Back)
+        GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Back)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+       // GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 1.0f); // Top Right Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 1.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -1.0f); // Top Left Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -1.0f); // Bottom Left Of The Quad (Left)
+        GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 1.0f); // Bottom Right Of The Quad (Left)
 
-        GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
+        GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, -1.0f); // Top Right Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
         GL11.glVertex3f(X+1.0f, Y+1.0f, 1.0f); // Top Left Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, 1.0f); // Bottom Left Of The Quad (Right)
+        GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
         GL11.glVertex3f(X+1.0f, Y-1.0f, -1.0f); // Bottom Right Of The Quad (Right)
     }
 
@@ -286,43 +312,43 @@ public class flappy {
         
         //GL11.glColor3f(0.55f, 0.47f, 0.14f); // Set The Color To Bronze
         GL11.glTexCoord3f(1f,1f,0f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Top)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Top)
         GL11.glTexCoord3f(0f,1f,0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Top)
         GL11.glTexCoord3f(0f,1f,1f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 40.0f); // Bottom Left Of The Quad (Top)
         GL11.glTexCoord3f(1f,1f,1f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Bottom Right Of The Quad (Top)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, 40.0f); // Bottom Right Of The Quad (Top)
 
         //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Top Right Of The Quad (Bottom)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, 40.0f); // Top Right Of The Quad (Bottom)
         GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 40.0f); // Top Left Of The Quad (Bottom)
         GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Bottom)
         GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Bottom)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Bottom)
 
         //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Top Right Of The Quad (Front)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, 40.0f); // Top Right Of The Quad (Front)
         GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Front)
         GL11.glTexCoord3f(0.0f, 0.0f,1.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Front)
         GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Bottom Right Of The Quad (Front)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, 40.0f); // Bottom Right Of The Quad (Front)
 
         //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Back)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, -40.0f); // Bottom Left Of The Quad (Back)
         GL11.glTexCoord3f(0.0f, 0.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Back)
         GL11.glTexCoord3f(0.0f, 1.0f,0.0f);
         GL11.glVertex3f(X-1.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Back)
         GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Back)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, -40.0f); // Top Left Of The Quad (Back)
 
         //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glTexCoord3f(0.0f, 1.0f,1.0f);
@@ -336,13 +362,13 @@ public class flappy {
 
         //GL11.glColor3f(0.3f, 0.3f, 0.1f); // Set The Color To Green
         GL11.glTexCoord3f(1.0f, 1.0f,0.0f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Right)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, -40.0f); // Top Right Of The Quad (Right)
         GL11.glTexCoord3f(1.0f, 1.0f,1.0f);
-        GL11.glVertex3f(X+80.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Right)
+        GL11.glVertex3f(X+60.0f, Y+1.0f, 40.0f); // Top Left Of The Quad (Right)
         GL11.glTexCoord3f(1.0f, 0.0f,1.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Right)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, 40.0f); // Bottom Left Of The Quad (Right)
         GL11.glTexCoord3f(1.0f, 0.0f,0.0f);
-        GL11.glVertex3f(X+80.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Right)
+        GL11.glVertex3f(X+60.0f, Y-1.0f, -40.0f); // Bottom Right Of The Quad (Right)
     }
 
     private boolean checkCollision(){
@@ -411,20 +437,27 @@ public class flappy {
         // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
         shader.end();
         GL11.glBegin(GL11.GL_QUADS);
-        createFloor(-40,-8);
+        createFloor(-25,-8);
         GL11.glEnd();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
+       
+       
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        Color.white.bind();
+        texture3.bind();
         GL11.glPushMatrix();
         GL11.glTranslatef(-10,y_coord,0);
         GL11.glRotatef(birdrotation, 0, 0, 1);
         GL11.glTranslatef(10,-y_coord,0);
 
         // make the bird
+
         GL11.glBegin(GL11.GL_QUADS);
         create(-10,y_coord);
         GL11.glEnd();
         GL11.glPopMatrix();
-        
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
         // check if passed pipe
         if (x_coord <= -10 && !passedOne){
             coinSound.playAsSoundEffect(1.0f, 1.0f, false);
